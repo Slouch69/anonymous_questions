@@ -114,6 +114,11 @@ p {
     background: #eee;
 }
 
+.vote-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .vote-count {
     font-weight: bold;
     font-size: 18px;

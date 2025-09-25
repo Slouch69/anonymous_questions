@@ -1,6 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     const questionsList = document.getElementById('questions-list');
 
+    // --- localStorage helper functions ---
+    function getVotedIds() {
+        const voted = localStorage.getItem('votedQuestionIds');
+        return voted ? JSON.parse(voted) : [];
+    }
+
+    function addVotedId(id) {
+        const votedIds = getVotedIds();
+        if (!votedIds.includes(id)) {
+            votedIds.push(id);
+            localStorage.setItem('votedQuestionIds', JSON.stringify(votedIds));
+        }
+    }
+    // ------------------------------------
+
     async function fetchQuestions() {
         try {
             const response = await fetch('/api/questions');
@@ -23,16 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const votedIds = getVotedIds(); // Get the list of voted questions
+
         questions.forEach(question => {
             const questionDiv = document.createElement('div');
             questionDiv.className = 'question';
+            const hasVoted = votedIds.includes(question.id); // Check if user has voted
+
             questionDiv.innerHTML = `
                 <p><strong>To: ${question.directed_to}</strong></p>
                 <p>${question.text}</p>
                 <div class="vote-controls">
-                    <button class="upvote-btn" data-id="${question.id}">⬆</button>
+                    <button class="upvote-btn" data-id="${question.id}" ${hasVoted ? 'disabled' : ''}>⬆</button>
                     <span class="vote-count">${question.votes}</span>
-                    <button class="downvote-btn" data-id="${question.id}">⬇</button>
+                    <button class="downvote-btn" data-id="${question.id}" ${hasVoted ? 'disabled' : ''}>⬇</button>
                 </div>
             `;
             questionsList.appendChild(questionDiv);
@@ -41,7 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     questionsList.addEventListener('click', async (e) => {
         const target = e.target;
-        const id = target.dataset.id;
+        const id = parseInt(target.dataset.id, 10);
+
+        if (!id || target.disabled) {
+            return; // Don't do anything if the button is disabled or not a vote button
+        }
 
         if (target.classList.contains('upvote-btn')) {
             await vote(id, 'upvote');
@@ -57,7 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                fetchQuestions(); // Refresh the list to show the new vote count
+                addVotedId(id); // Add the ID to localStorage after a successful vote
+                fetchQuestions(); // Refresh the list to show the new vote count and disabled buttons
             } else {
                 const errorData = await response.json();
                 console.error(`Error ${type}ing question:`, errorData.error);
