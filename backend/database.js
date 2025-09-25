@@ -1,7 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
 
+// Use the DATABASE_PATH from environment variables if it exists (for Render),
+// otherwise, use a local file (for development).
+const dbPath = process.env.DATABASE_PATH || './questions.db';
+
 // Connect to a database file. If the file does not exist, it will be created.
-const db = new sqlite3.Database('./questions.db', (err) => {
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error(err.message);
   }
