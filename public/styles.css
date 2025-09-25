@@ -16,7 +16,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 100%;
-    max-width: 600px;
+    max-width: 800px; /* Increased from 600px */
 }
 
 h1 {
@@ -40,6 +40,7 @@ textarea {
     border: 1px solid #ccc;
     margin-bottom: 10px;
     font-size: 16px;
+    font-family: inherit; /* Added to match body font */
     resize: vertical;
     box-sizing: border-box;
 }
@@ -92,6 +93,7 @@ p {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0; /* Prevent vote controls from shrinking */
 }
 
 .vote-controls button {
@@ -105,6 +107,7 @@ p {
     cursor: pointer;
     font-size: 18px;
     line-height: 1;
+    margin-top: 0; /* Override default button margin */
 }
 
 .vote-controls button:hover {
@@ -114,4 +117,42 @@ p {
 .vote-count {
     font-weight: bold;
     font-size: 18px;
+}
+
+/* Custom Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content p {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.modal-content button {
+    width: auto;
+    padding: 10px 30px;
+    margin-top: 0;
 }

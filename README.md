@@ -36,45 +36,35 @@ The application is built with a simple frontend (HTML, CSS, vanilla JavaScript) 
 Render is a modern hosting platform with a free tier that is perfect for this project. It supports SQLite by using a persistent disk.
 
 ### Step 1: Push to GitHub
-(You have already completed this step!)
+(This is already complete.)
 
-### Step 2: Set up on Render
+### Step 2: Deploy on Render
 
 1.  **Create an Account:**
-    *   Go to [Render.com](https://render.com) and sign up for a free account. It's easiest to sign up using your GitHub account.
+    *   Go to [Render.com](https://render.com) and sign up for a free account (signing up with GitHub is easiest).
 
-2.  **Create a Persistent Disk:**
-    *   From your Render Dashboard, click **"New"** > **"Disk"**.
-    *   Give it a name (e.g., `beatles-db`).
-    *   Set the size to **1 GB** (the smallest and free option).
-    *   Click **"Create Disk"**.
-
-3.  **Create the Web Service:**
-    *   From your Dashboard, click **"New"** > **"Web Service"**.
-    *   Connect your GitHub account and select your repository (`anonymous_questions`).
+2.  **Create the Web Service:**
+    *   From your Render Dashboard, click **"New"** > **"Web Service"**.
+    *   Connect your GitHub account and select your `anonymous_questions` repository.
     *   Give your service a unique name (e.g., `beatles-q-and-a`).
     *   Set the **Root Directory** to `backend`. This tells Render to run commands from within the `backend` folder.
     *   Set the **Build Command** to `npm install`.
     *   Set the **Start Command** to `npm start`.
 
-4.  **Add the Persistent Disk:**
+3.  **Add a Persistent Disk and Environment Variable:**
     *   Scroll down to the **"Advanced"** section.
     *   Click **"Add Disk"**.
-    *   For **Mount Path**, enter `/data/db`. This is where the disk will be accessible inside your application.
-    *   Select the disk you created earlier (`beatles-db`).
+        *   **Mount Path:** `/data/db`
+        *   **Size:** `1 GB`
+    *   Just below the disk settings, click **"Add Environment Variable"**.
+        *   **Key:** `DATABASE_PATH`
+        *   **Value:** `/data/db/questions.db`
 
-5.  **Set the Database Path Environment Variable:**
-    *   Still in the "Advanced" section, click **"Add Environment Variable"**.
-    *   For the **Key**, enter `DATABASE_PATH`.
-    *   For the **Value**, enter `/data/db/questions.db`. This tells our app where to create and find the database file on the persistent disk.
-
-6.  **Deploy!**
+4.  **Deploy!**
     *   Scroll to the bottom and click **"Create Web Service"**.
     *   Render will now build and deploy your application. It may take a few minutes.
     *   Once it's live, Render will provide you with a public URL (e.g., `https://beatles-q-and-a.onrender.com`).
 
-### Step 3: Update Database Code
+### Admin Access
 
-The final step is to tell our `database.js` file to use the `DATABASE_PATH` environment variable if it exists.
-
-I will make this change now.
+To delete questions, navigate to the hidden admin page by adding `/admin.html` to your Render URL (e.g., `https://beatles-q-and-a.onrender.com/admin.html`).
