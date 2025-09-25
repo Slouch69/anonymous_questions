@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display !== 'none') {
+            hideModal();
+        }
+    });
+
     if (questionForm) {
         questionForm.addEventListener('submit', async (e) => {
             e.preventDefault();
