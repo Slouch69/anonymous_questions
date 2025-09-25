@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beatles All-Hands</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Beatles All-Hands</h1>
+        <p class="intro-text">
+            Ask away to the band.<br><br>
+            Ask your questions anonymously for John Lennon, Paul McCartney, Ringo Starr, George Harrison or All Members of the Band.
+        </p>
+        <form id="question-form">
+            <textarea id="question-text" placeholder="Type your question here..." required></textarea>
+            <label for="directed-to">Direct question to:</label>
+            <select id="directed-to" name="directed-to">
+                <option value="All Members of the Band">All Members of the Band</option>
+                <option value="John Lennon">John Lennon</option>
+                <option value="Paul McCartney">Paul McCartney</option>
+                <option value="Ringo Starr">Ringo Starr</option>
+                <option value="George Harrison">George Harrison</option>
+            </select>
+            <button type="submit">Submit Question</button>
+        </form>
+        <p><a href="/questions.html">View all questions</a></p>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
