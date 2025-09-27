@@ -24,47 +24,51 @@ The application is built with a simple frontend (HTML, CSS, vanilla JavaScript) 
 |-- README.md
 ```
 
-## How to Run Locally
+## How to Run Locally (for Development)
 
 1.  Navigate to the `backend` directory: `cd backend`
 2.  Install dependencies: `npm install`
-3.  Start the server: `npm start`
+3.  Start the development server: `npm run dev` (This uses `nodemon` to restart automatically on file changes).
 4.  Open your browser and go to `http://localhost:3000`
 
-## How to Deploy to Render (for Public Sharing)
+---
 
-Render is a modern hosting platform with a free tier that is perfect for this project. It supports SQLite by using a persistent disk.
+## How to Deploy and Update on an Internal Server
 
-### Step 1: Push to GitHub
-(This is already complete.)
+This guide uses `git` for updating the code and `pm2` to keep the application running reliably.
 
-### Step 2: Deploy on Render
+### Step 1: Initial Server Setup (One Time Only)
 
-1.  **Create an Account:**
-    *   Go to [Render.com](https://render.com) and sign up for a free account (signing up with GitHub is easiest).
+1.  **Install `pm2`:**
+    *   On the server, install `pm2` globally: `npm install pm2 -g`
 
-2.  **Create the Web Service:**
-    *   From your Render Dashboard, click **"New"** > **"Web Service"**.
-    *   Connect your GitHub account and select your `anonymous_questions` repository.
-    *   Give your service a unique name (e.g., `beatles-q-and-a`).
-    *   Set the **Root Directory** to `backend`. This tells Render to run commands from within the `backend` folder.
-    *   Set the **Build Command** to `npm install`.
-    *   Set the **Start Command** to `npm start`.
+2.  **Clone the Repository:**
+    *   Clone your project from GitHub: `git clone https://github.com/Slouch69/anonymous_questions.git`
 
-3.  **Add a Persistent Disk and Environment Variable:**
-    *   Scroll down to the **"Advanced"** section.
-    *   Click **"Add Disk"**.
-        *   **Mount Path:** `/data/db`
-        *   **Size:** `1 GB`
-    *   Just below the disk settings, click **"Add Environment Variable"**.
-        *   **Key:** `DATABASE_PATH`
-        *   **Value:** `/data/db/questions.db`
+3.  **Install Dependencies:**
+    *   Navigate into the backend directory: `cd anonymous_questions/backend`
+    *   Install the project dependencies: `npm install`
 
-4.  **Deploy!**
-    *   Scroll to the bottom and click **"Create Web Service"**.
-    *   Render will now build and deploy your application. It may take a few minutes.
-    *   Once it's live, Render will provide you with a public URL (e.g., `https://beatles-q-and-a.onrender.com`).
+4.  **First Start:**
+    *   Start the application with `pm2`: `pm2 start server.js --name "beatles-q-and-a"`
+
+Your application is now running. `pm2` will automatically restart it if it crashes.
+
+### Step 2: Updating the Application (The Workflow)
+
+Any time you make changes and push them to GitHub, follow these steps on the server to deploy the update:
+
+1.  **Navigate to the Directory:**
+    *   Go to the project folder on the server: `cd anonymous_questions`
+
+2.  **Pull the Latest Code:**
+    *   Fetch the latest changes from GitHub: `git pull`
+
+3.  **Restart the Application:**
+    *   Tell `pm2` to gracefully restart your app with the new code: `pm2 restart beatles-q-and-a`
+
+That's it! `pm2` handles the stop/start process in one simple command, ensuring a smooth update.
 
 ### Admin Access
 
-To delete questions, navigate to the hidden admin page by adding `/admin.html` to your Render URL (e.g., `https://beatles-q-and-a.onrender.com/admin.html`).
+To delete questions, navigate to the hidden admin page by adding `/admin.html` to your server's URL (e.g., `http://17.203.210.47:3000/admin.html`).
